@@ -1,0 +1,54 @@
+### python unlocked
+
+## Customize module loading
+
+## using super
+say if you inherit from a parent class which has a function in it. in your subclass you wanna use that function but provide some additional stuff as well. in that case you need to call your parents function during the execution of your new version of said function to get all the data. 
+for this super provides easy access to a parents methods without having to know the exact name of the parents class
+according to the method resolution order (mro) super searches all baseclasses first before going a level higher and always uses the first match.
+example:
+
+class grandparent:
+	def do(self):
+		dosomething
+class mother(grandparent):
+	def do(self):
+		dosomething
+class father(grandparent):
+	def dosomethingelse(self):
+		dosomething
+class child(father,mother):
+	def do(self):
+		dosomething
+		super.do()
+
+method resolution order:
+child, father, mother, grandparent
+
+in this case using super in the child class, it would use the first match of the function do, which according to the mro it will 
+find in the class "mother"
+
+
+## language protocols
+
+#iteration protocol
+if an object has the __iter__ method you can iterate over it.
+you can easily write your own iterator by providing a class with an __init__ and __next__ method to loop over an object
+
+# context manager protocol
+providing context for executions which is similar to a try/finally statement
+context managers provide an __enter__ and __exit__ method to controll what happens when when you enter the execution, during and at the end of it.
+this is usually used for things like using and releasing resources like files.
+
+to make simple and quick contextmanagers, theres a module in the standard library called contextlib with which you can decorate functions.
+after, simply implement the function using a try except statement and yield the wanted output.
+
+
+## decorators
+dynamically alter functions at runtime. wraps a function and executes additional code or replaces code
+can also be used on classes to for example change methods if they exist etc.
+
+
+## Utilities
+
+# Iterators

@@ -1,0 +1,3 @@
+
+class notes(object):
+	pass

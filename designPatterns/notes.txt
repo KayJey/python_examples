@@ -1,0 +1,79 @@
+# Notes for design patterns
+
+## MVC - Model View Controller
+This pattern separates the whole program into three different components and is a common practice
+
+1. The model
+The model holds the data / data access and business logic of the software. 
+Accordingly, it provides interfaces to the Controller which can be used to access data and modify it.
+
+2. The View
+The view visualizes the data and reacts to user interactions which either requests more data over the Controller from the model or 
+modifies data via the Controller
+All interactions basically trigger a call to the Controller
+
+3. The Controller
+The Controller is the interface in between the View and the Model.
+When the user interacts with the view, the Controller asks the model for the requested data and displays it on the view accordingly
+
+Pros:
+- Changes dont affect the rest of the components as long as the interfaces are still the same
+
+## Singleton
+Singletons are useful when you want only one possible instance of an object to exist at runtime.
+This is commonly used for example when theres a shared data source which is accessed by multiple classes.
+It can be data stored in said class or also a data base connection, which you usually dont want to establish multiple times.
+Rather having one active instance which can be accessed is usually what you should aim for
+
+Theres multiple ways to implement Singleton:
+
+1. The module singleton
+This one basically uses pythons import feature, since a module can only be imported once
+
+2. Classic singleton
+This is one of the most common ones. 
+You simply add a check to the __new__ method of the singleton class in which you look for already existing instances of this class
+If theres no other, you initiate it and return it, otherwise return the existing one
+example:
+	class Singleton(object):
+		def __new__(cls):
+			if not hasattr(cls, 'instance'):
+				cls.instance = super(Singleton, cls).__new__(cls)
+			return cls.instance
+
+Problem:
+	Children who inherit from this class, do not have access to data on the pre-existing singleton instance
+	because they dont inherit the state.
+	This can be solved with the next singleton
+
+3. Borg singleton
+The Borg singleton allows to make multiple instances, but shares its state across all of them.
+This means, that even Children have access to its parents instance data
+Example:
+	class BorgSingleton(object):
+		shared_state = {}
+
+		def __new__(cls, *args, **kwargs):
+			obj = super(BorgSingleton, cls).__new__(cls, *args, **kwargs)
+			obj.__dict__ = cls.shared_state
+			return obj
+
+
+## Factories
+Factories are generally used to separate object creation and class implementation
+This way the client doesnt need to know which class has been instantiated but only needs to know the class' interface 
+Theres two types of factories that can be use
+
+1. The factory method
+This one is commonly used when you want to decouple a client from a particular product. this way the client doesnt need to worry about the creation and configuration
+
+Creator = defines all methods 
+
+2. Abstract factory
+decoupling client from product classes. Client accesses the objects by calling a provided interface and asking for a certain factory. The creation of it will be handled completely in the background.
+
+
+## Facade pattern
+Basically this is meant to help making a complex subsystem easily accessible over a new interface, which provides methods for basic tasks inside the subsystem. The client can then simply use those methods for easy implementation and/or still use the subsystem directly.
+
+
